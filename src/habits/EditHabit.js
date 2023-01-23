@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -6,9 +6,9 @@ export default function EditUser() {
   let navigate = useNavigate();
 
   const { id } = useParams();
+  let [info, setInfo] = useState();
+
   const habitElementInput = useRef();
-  const streakElementInput = useRef();
-  const doneElementInput = useRef();
   const colorElementInput = useRef();
 
   useEffect(() => {
@@ -18,9 +18,8 @@ export default function EditUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
+      ...info,
       habit: habitElementInput.current.value,
-      streak: streakElementInput.current.value,
-      doneToday: doneElementInput.current.value,
       color: colorElementInput.current.value,
     };
     await axios.put(`http://localhost:8080/habit/${id}`, data);
@@ -29,10 +28,9 @@ export default function EditUser() {
 
   const loadHabits = async (e) => {
     let result = await axios.get(`http://localhost:8080/habit/${id}`);
-    let { habit, streak, doneToday, color } = result.data;
+    let { habit, color } = result.data;
+    setInfo(result.data);
     habitElementInput.current.value = habit;
-    streakElementInput.current.value = streak;
-    doneElementInput.current.value = doneToday;
     colorElementInput.current.value = color;
   };
 

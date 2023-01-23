@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { compareAsc, startOfDay } from "date-fns";
+
 export default function Home() {
   const [habits, setHabits] = useState([]);
-
+  let today = startOfDay(new Date());
   useEffect(() => {
+    changeForDate();
     loadHabits();
   }, []);
 
@@ -12,9 +15,25 @@ export default function Home() {
     const result = await axios.get("http://localhost:8080/habits");
     setHabits(result.data);
   };
-
+  const changeForDate = async () => {
+    const result = await axios.get("http://localhost:8080/habits");
+    let habitList = result.data;
+    for (let i = 0; i < habitList.length; i++) {
+      let habit = habitList[0];
+      let lastDate = new Date(habit.lastDateModified);
+      if (compareAsc(today, lastDate) > 0) {
+        habit.doneToday = false;
+        changeUser(habit);
+      }
+    }
+  };
   const deleteUser = async (id) => {
     await axios.delete(`http://localhost:8080/habit/${id}`);
+    loadHabits();
+  };
+
+  const changeUser = async (habit) => {
+    await axios.put(`http://localhost:8080/habit/${habit.id}`, habit);
     loadHabits();
   };
 
@@ -23,6 +42,30 @@ export default function Home() {
       return "true";
     } else {
       return "false";
+    }
+  };
+
+  const changeLastDateModified = async (habit) => {
+    habit.lastDateModified = today.toLocaleDateString();
+    changeUser(habit);
+  };
+
+  const handleDoneChange = (event, habit) => {
+    let lastDate = new Date(habit.lastDateModified);
+    if (compareAsc(today, lastDate) > 0) {
+      habit.streak++;
+      habit.doneToday = true;
+      changeLastDateModified(habit);
+    } else {
+      if (event.target.checked) {
+        habit.streak++;
+        habit.doneToday = true;
+        changeUser(habit);
+      } else {
+        habit.streak--;
+        habit.doneToday = false;
+        changeUser(habit);
+      }
     }
   };
 
@@ -51,7 +94,11 @@ export default function Home() {
                 <td>{habit.habit}</td>
                 <td>{habit.streak}</td>
                 <td>
-                  <input type="checkbox" defaultChecked={habit.doneToday} />
+                  <input
+                    type="checkbox"
+                    onChange={(event) => handleDoneChange(event, habit)}
+                    defaultChecked={habit.doneToday}
+                  />
                 </td>
 
                 <td>

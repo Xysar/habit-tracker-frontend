@@ -32,22 +32,28 @@ export default function Home() {
         <table className="table border shadow">
           <thead>
             <tr>
-              <th scope="col">#</th>
               <th scope="col">Habit</th>
               <th scope="col">Streak</th>
               <th scope="col">Done Today?</th>
-              <th scope="col">Color</th>
-              <th scope="col">Action</th>
+
+              <th className="action-col" scope="col">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {habits.map((habit, index) => (
-              <tr key={index}>
-                <th scope="row">{index + 1}</th>
+              <tr
+                className="habit-row"
+                key={index}
+                style={{ borderLeft: `5px solid ${habit.color}` }}
+              >
                 <td>{habit.habit}</td>
                 <td>{habit.streak}</td>
-                <td>{booleanToString(habit.doneToday)}</td>
-                <td>{habit.color}</td>
+                <td>
+                  <input type="checkbox" defaultChecked={habit.doneToday} />
+                </td>
+
                 <td>
                   <Link
                     to={`/viewhabit/${habit.id}`}

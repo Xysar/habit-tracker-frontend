@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -6,20 +6,23 @@ export default function AddUser() {
   let navigate = useNavigate();
 
   const habitElementInput = useRef();
-  const streakElementInput = useRef();
-  const doneElementInput = useRef();
   const colorElementInput = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      habit: habitElementInput.current.value,
-      streak: streakElementInput.current.value,
-      doneToday: doneElementInput.current.value,
+      habit: capitalizeActivity(habitElementInput.current.value),
+      streak: 0,
+      doneToday: false,
       color: colorElementInput.current.value,
     };
     await axios.post("http://localhost:8080/habit", data);
     navigate("/");
+  };
+
+  const capitalizeActivity = (activity) => {
+    const newString = activity.charAt(0).toUpperCase() + activity.slice(1);
+    return newString;
   };
 
   return (
@@ -38,33 +41,15 @@ export default function AddUser() {
                 className="form-control"
                 placeholder="Enter new habit"
                 name="habit"
+                required
               />
-              <label htmlFor="Streak" className="form-label">
-                Streak Number
-              </label>
-              <input
-                ref={streakElementInput}
-                type={"text"}
-                className="form-control"
-                placeholder="Enter 0"
-                name="streak"
-              />
-              <label htmlFor="DoneToday" className="form-label">
-                Did you do today?
-              </label>
-              <input
-                ref={doneElementInput}
-                type={"text"}
-                className="form-control"
-                placeholder="Enter if done today"
-                name="doneToday"
-              />
+
               <label htmlFor="Color" className="form-label">
                 Pick a Color
               </label>
               <input
                 ref={colorElementInput}
-                type={"text"}
+                type="color"
                 className="form-control"
                 placeholder="Enter a color"
                 name="name"

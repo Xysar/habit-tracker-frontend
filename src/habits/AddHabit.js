@@ -21,7 +21,7 @@ export default function AddUser() {
       lastDateModified: defaultDate.toLocaleDateString(),
       datesModified: dates,
     };
-    console.log(data);
+
     await axios.post("http://localhost:8080/habit", data);
     navigate("/");
   };

@@ -3,9 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { compareAsc, startOfDay, getDate } from "date-fns";
 
-export default function HabitTable({ habits, setHabits, loadHabits }) {
-  let today = startOfDay(new Date());
-
+export default function HabitTable({ habits, setHabits, loadHabits, today }) {
   useEffect(() => {
     changeForDate();
     loadHabits();
@@ -15,7 +13,7 @@ export default function HabitTable({ habits, setHabits, loadHabits }) {
     const result = await axios.get("http://localhost:8080/habits");
     let habitList = result.data;
     for (let i = 0; i < habitList.length; i++) {
-      let habit = habitList[0];
+      let habit = habitList[i];
       let lastDate = new Date(habit.lastDateModified);
       if (compareAsc(today, lastDate) > 0) {
         habit.doneToday = false;

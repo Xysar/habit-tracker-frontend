@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { compareAsc, startOfDay } from "date-fns";
+import { compareAsc, startOfDay, getDate } from "date-fns";
 
-export default function HabitTable() {
-  const [habits, setHabits] = useState([]);
+export default function HabitTable({ habits, setHabits, loadHabits }) {
   let today = startOfDay(new Date());
+
   useEffect(() => {
     changeForDate();
     loadHabits();
   }, []);
 
-  const loadHabits = async () => {
-    const result = await axios.get("http://localhost:8080/habits");
-    setHabits(result.data);
-  };
   const changeForDate = async () => {
     const result = await axios.get("http://localhost:8080/habits");
     let habitList = result.data;
@@ -37,14 +33,6 @@ export default function HabitTable() {
     loadHabits();
   };
 
-  const booleanToString = (boolean) => {
-    if (boolean) {
-      return "true";
-    } else {
-      return "false";
-    }
-  };
-
   const changeLastDateModified = async (habit) => {
     habit.lastDateModified = today.toLocaleDateString();
     changeUser(habit);
@@ -52,17 +40,21 @@ export default function HabitTable() {
 
   const handleDoneChange = (event, habit) => {
     let lastDate = new Date(habit.lastDateModified);
+
     if (compareAsc(today, lastDate) > 0) {
       habit.streak++;
       habit.doneToday = true;
+      habit.datesModified[getDate(today)] = true;
       changeLastDateModified(habit);
     } else {
       if (event.target.checked) {
         habit.streak++;
+        habit.datesModified[getDate(today)] = true;
         habit.doneToday = true;
         changeUser(habit);
       } else {
         habit.streak--;
+        habit.datesModified[getDate(today)] = false;
         habit.doneToday = false;
         changeUser(habit);
       }

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { compareAsc } from "date-fns";
+
 export default function AddUser() {
   let navigate = useNavigate();
 
@@ -12,12 +12,14 @@ export default function AddUser() {
     e.preventDefault();
     let defaultDate = new Date(1970, 0, 1);
 
+    let dates = Array(31).fill(false);
     const data = {
       habit: capitalizeActivity(habitElementInput.current.value),
       streak: 0,
       doneToday: false,
       color: colorElementInput.current.value,
       lastDateModified: defaultDate.toLocaleDateString(),
+      datesModified: dates,
     };
     console.log(data);
     await axios.post("http://localhost:8080/habit", data);

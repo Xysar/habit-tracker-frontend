@@ -15,7 +15,9 @@ export default function HabitBoard({ habits, setHabits, loadHabits, today }) {
   }, []);
 
   const changeForMonth = async () => {
-    const result = await axios.get("http://localhost:8080/habits");
+    const result = await axios.get(
+      "https://habit-tracker-backend-production.up.railway.app/habits"
+    );
     let habitList = result.data;
 
     let habit = habitList[0];
@@ -32,7 +34,10 @@ export default function HabitBoard({ habits, setHabits, loadHabits, today }) {
   };
 
   const changeUser = async (habit) => {
-    await axios.put(`http://localhost:8080/habit/${habit.id}`, habit);
+    await axios.put(
+      `https://habit-tracker-backend-production.up.railway.app/habit/${habit.id}`,
+      habit
+    );
     loadHabits();
   };
 

@@ -11,7 +11,10 @@ export default function Home() {
 
   var month = today.toLocaleString("default", { month: "long" });
   const loadHabits = async () => {
-    const result = await axios.get("http://localhost:8080/habits");
+    const result = await axios.get(
+      "https://habit-tracker-backend-production.up.railway.app/habits"
+    );
+
     setHabits(result.data);
   };
 

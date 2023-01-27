@@ -22,12 +22,17 @@ export default function EditUser() {
       habit: habitElementInput.current.value,
       color: colorElementInput.current.value,
     };
-    await axios.put(`http://localhost:8080/habit/${id}`, data);
+    await axios.put(
+      `habit-tracker-backend-production.up.railway.apphabit/${id}`,
+      data
+    );
     navigate("/");
   };
 
   const loadHabits = async (e) => {
-    let result = await axios.get(`http://localhost:8080/habit/${id}`);
+    let result = await axios.get(
+      `habit-tracker-backend-production.up.railway.apphabit/${id}`
+    );
     let { habit, color } = result.data;
     setInfo(result.data);
     habitElementInput.current.value = habit;

@@ -22,7 +22,10 @@ export default function AddUser() {
       datesModified: dates,
     };
 
-    await axios.post("http://localhost:8080/habit", data);
+    await axios.post(
+      "habit-tracker-backend-production.up.railway.apphabit",
+      data
+    );
     navigate("/");
   };
 

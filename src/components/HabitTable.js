@@ -9,10 +9,10 @@ export default function HabitTable({ habits, setHabits, loadHabits, today }) {
     loadHabits();
   }, []);
 
+  axios.defaults.baseURL =
+    "https://habit-tracker-backend-production.up.railway.app/";
   const changeForDate = async () => {
-    const result = await axios.get(
-      "https://habit-tracker-backend-production.up.railway.app/habits"
-    );
+    const result = await axios.get("/habits");
     let habitList = result.data;
     for (let i = 0; i < habitList.length; i++) {
       let habit = habitList[i];
@@ -24,17 +24,12 @@ export default function HabitTable({ habits, setHabits, loadHabits, today }) {
     }
   };
   const deleteUser = async (id) => {
-    await axios.delete(
-      `https://habit-tracker-backend-production.up.railway.app/habit/${id}`
-    );
+    await axios.delete(`/habit/${id}`);
     loadHabits();
   };
 
   const changeUser = async (habit) => {
-    await axios.put(
-      `https://habit-tracker-backend-production.up.railway.app/habit/${habit.id}`,
-      habit
-    );
+    await axios.put(`/habit/${habit.id}`, habit);
     loadHabits();
   };
 

@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function AddUser() {
   let navigate = useNavigate();
-
+  axios.defaults.baseURL =
+    "https://habit-tracker-backend-production.up.railway.app";
   const habitElementInput = useRef();
   const colorElementInput = useRef();
 
@@ -22,10 +23,7 @@ export default function AddUser() {
       datesModified: dates,
     };
 
-    await axios.post(
-      "habit-tracker-backend-production.up.railway.app/habit",
-      data
-    );
+    await axios.post("/habit", data);
     navigate("/");
   };
 

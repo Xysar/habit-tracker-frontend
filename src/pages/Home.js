@@ -14,7 +14,6 @@ export default function Home() {
     const result = await axios.get(
       "https://habit-tracker-backend-production.up.railway.app/habits"
     );
-
     setHabits(result.data);
   };
 

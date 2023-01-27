@@ -23,7 +23,7 @@ export default function EditUser() {
       color: colorElementInput.current.value,
     };
     await axios.put(
-      `habit-tracker-backend-production.up.railway.apphabit/${id}`,
+      `habit-tracker-backend-production.up.railway.app/habit/${id}`,
       data
     );
     navigate("/");
@@ -31,7 +31,7 @@ export default function EditUser() {
 
   const loadHabits = async (e) => {
     let result = await axios.get(
-      `habit-tracker-backend-production.up.railway.apphabit/${id}`
+      `habit-tracker-backend-production.up.railway.app/habit/${id}`
     );
     let { habit, color } = result.data;
     setInfo(result.data);

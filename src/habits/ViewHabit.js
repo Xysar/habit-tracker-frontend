@@ -17,7 +17,7 @@ export default function AddUser() {
 
   const loadHabits = async (e) => {
     let result = await axios.get(
-      `habit-tracker-backend-production.up.railway.apphabit/${id}`
+      `habit-tracker-backend-production.up.railway.app/habit/${id}`
     );
     setData(result.data);
   };

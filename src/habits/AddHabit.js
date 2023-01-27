@@ -23,7 +23,7 @@ export default function AddUser() {
     };
 
     await axios.post(
-      "habit-tracker-backend-production.up.railway.apphabit",
+      "habit-tracker-backend-production.up.railway.app/habit",
       data
     );
     navigate("/");

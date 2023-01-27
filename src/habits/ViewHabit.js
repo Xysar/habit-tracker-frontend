@@ -7,7 +7,8 @@ export default function AddUser() {
     loadHabits();
   }, []);
   const { id } = useParams();
-
+  axios.defaults.baseURL =
+    "https://habit-tracker-backend-production.up.railway.app";
   const [data, setData] = useState({
     habit: "",
     streak: "",
@@ -16,9 +17,7 @@ export default function AddUser() {
   });
 
   const loadHabits = async (e) => {
-    let result = await axios.get(
-      `habit-tracker-backend-production.up.railway.app/habit/${id}`
-    );
+    let result = await axios.get(`/habit/${id}`);
     setData(result.data);
   };
 

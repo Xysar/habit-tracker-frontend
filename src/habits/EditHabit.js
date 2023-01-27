@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function EditUser() {
   let navigate = useNavigate();
-
+  axios.defaults.baseURL =
+    "https://habit-tracker-backend-production.up.railway.app";
   const { id } = useParams();
   let [info, setInfo] = useState();
 
@@ -22,17 +23,12 @@ export default function EditUser() {
       habit: habitElementInput.current.value,
       color: colorElementInput.current.value,
     };
-    await axios.put(
-      `habit-tracker-backend-production.up.railway.app/habit/${id}`,
-      data
-    );
+    await axios.put(`/habit/${id}`, data);
     navigate("/");
   };
 
   const loadHabits = async (e) => {
-    let result = await axios.get(
-      `habit-tracker-backend-production.up.railway.app/habit/${id}`
-    );
+    let result = await axios.get(`/habit/${id}`);
     let { habit, color } = result.data;
     setInfo(result.data);
     habitElementInput.current.value = habit;
